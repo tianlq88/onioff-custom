@@ -82,7 +82,7 @@ def checkOnion(onion):
     global gathered, response, outFile
 
     ipcheck_url = 'https://api.ipify.org'
-    cookies = 'random=1064; coob=5085; PHPSESSID=4ojcnq0tmul19cv0ba44ukfm3f'
+    cookies = 'PHPSESSID=t4qiruli672oel0a1j7mnr34bh; path=/; HttpOnly'
     jar = requests.cookies.RequestsCookieJar()
     for cookie in cookies.split(';'):
         key,value = cookie.split('=', 1)
