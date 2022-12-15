@@ -8,7 +8,7 @@ See License at nikolaskama.me (https://nikolaskama.me/onioffproject)
 """
 
 import socket, socks, requests, sys, os, optparse, datetime, re
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 from termcolor import colored
 from bs4 import BeautifulSoup
 from time import process_time, sleep
@@ -101,10 +101,12 @@ def checkOnion(onion, cookies=''):
         'Upgrade-Insecure-Requests': '1',
         'User-Agent':'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0'
     }
+    req = Request(onion)
+    req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0')
     check_ip = requests.get(ipcheck_url).text.replace('\n','')
     if check_ip != pure_ip:
         try:
-            response = urlopen(onion).getcode()
+            response = urlopen(req).getcode()
             #if cookies != '':
                 #req = requests.get(onion, cookies=jar, headers=headers)
             #else:
