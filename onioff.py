@@ -124,6 +124,7 @@ def checkOnion(onion, cookies=''):
             show = ("[O] {} ({}ACTIVE{}) ==> '{}'").format(onion, GREEN, END, response2)
             gathered[onion] = 'ACTIVE', response2
         elif response == 302:
+            nowPrint("--------302 Moved Temporarily", True)
             try:
                 location = req.url
                 checkOnion(location, req.cookies)
