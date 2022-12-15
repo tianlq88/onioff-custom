@@ -107,6 +107,7 @@ def checkOnion(onion, cookies=''):
     check_ip = requests.get(ipcheck_url).text.replace('\n','')
     if check_ip != pure_ip:
         try:
+            print(req.headers)
             response = urlopen(req).getcode()
             #if cookies != '':
                 #req = requests.get(onion, cookies=jar, headers=headers)
