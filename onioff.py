@@ -78,21 +78,20 @@ def connectTor():
 
 
 # Perform onion status & title inspection
-def checkOnion(onion):
+def checkOnion(onion, cookies=''):
     global gathered, response, outFile
 
     ipcheck_url = 'https://api.ipify.org'
-    cookies = 'coob=5085; random=1064; PHPSESSID=hjdoncgkug5untjb8fd76ribvs; userid=758244'
-    jar = requests.cookies.RequestsCookieJar()
-    for cookie in cookies.split(';'):
-        key,value = cookie.split('=', 1)
-        jar.set(key, value)
+    if cookies != '':
+        jar = requests.cookies.RequestsCookieJar()
+        for cookie in cookies.split(';'):
+            key,value = cookie.split('=', 1)
+            jar.set(key, value)
     headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
         'Accept-Encoding': 'gzip,deflate',
         'Accept-Language': 'en-US,en;q=0.5',
         'Connection': 'keep-alive',
-        #'Cookie': 'coob=5085; random=1064; PHPSESSID=hjdoncgkug5untjb8fd76ribvs',
         'Host': 'xxxxxxxxxs6qbnahsbvxbghsnqh4rj6whbyblqtnmetf7vell2fmxmad.onion',
         'Pragma': 'no-cache',
         'Sec-Fetch-Dest': 'document',
@@ -106,8 +105,10 @@ def checkOnion(onion):
     if check_ip != pure_ip:
         try:
             #response = urlopen(onion).getcode()
-            
-            req = requests.get(onion, cookies=jar, headers=headers)
+            if cookies != '':
+                req = requests.get(onion, cookies=jar, headers=headers)
+            else:
+                req = requests.get(onion, headers=headers)
             response = req.status_code
         except Exception as e:
             response = e
@@ -122,6 +123,12 @@ def checkOnion(onion):
 
             show = ("[O] {} ({}ACTIVE{}) ==> '{}'").format(onion, GREEN, END, response2)
             gathered[onion] = 'ACTIVE', response2
+        elif response == 302:
+            try:
+                location = req.url
+                checkOnion(location, req.cookies)
+            except:
+                response2 = 'UNAVAILABLE' 
         else:
             response = str(response).strip().replace(':','')
             response2 = 'UNAVAILABLE (Onion Inactive)'
