@@ -82,17 +82,17 @@ def checkOnion(onion):
     global gathered, response, outFile
 
     ipcheck_url = 'https://api.ipify.org'
-    #cookies = 'PHPSESSID=t4qiruli672oel0a1j7mnr34bh; path=/; HttpOnly'
-    #jar = requests.cookies.RequestsCookieJar()
-    #for cookie in cookies.split(';'):
-        #key,value = cookie.split('=', 1)
-        #jar.set(key, value)
+    cookies = 'coob=5085; random=1064; PHPSESSID=hjdoncgkug5untjb8fd76ribvs'
+    jar = requests.cookies.RequestsCookieJar()
+    for cookie in cookies.split(';'):
+        key,value = cookie.split('=', 1)
+        jar.set(key, value)
     headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
         'Accept-Encoding': 'gzip,deflate',
         'Accept-Language': 'en-US,en;q=0.5',
         'Connection': 'keep-alive',
-        'Cookie': 'coob=5085; random=1064; PHPSESSID=hjdoncgkug5untjb8fd76ribvs',
+        #'Cookie': 'coob=5085; random=1064; PHPSESSID=hjdoncgkug5untjb8fd76ribvs',
         'Host': 'xxxxxxxxxs6qbnahsbvxbghsnqh4rj6whbyblqtnmetf7vell2fmxmad.onion',
         'Pragma': 'no-cache',
         'Sec-Fetch-Dest': 'document',
@@ -107,7 +107,7 @@ def checkOnion(onion):
         try:
             #response = urlopen(onion).getcode()
             
-            req = requests.get(onion, headers=headers)
+            req = requests.get(onion, cookies=jar, headers=headers)
             response = req.status_code
         except Exception as e:
             response = e
