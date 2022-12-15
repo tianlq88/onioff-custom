@@ -92,7 +92,7 @@ def checkOnion(onion, cookies=''):
         'Accept-Encoding': 'gzip,deflate',
         'Accept-Language': 'en-US,en;q=0.5',
         'Connection': 'keep-alive',
-        'Host': 'xxxxxxxxxs6qbnahsbvxbghsnqh4rj6whbyblqtnmetf7vell2fmxmad.onion',
+        'Host': '666666666tjjjeweu5iikuj7hkpke5phvdylcless7g4dn6vma2xxcad.onion',
         'Pragma': 'no-cache',
         'Sec-Fetch-Dest': 'document',
         'Sec-Fetch-Mode': 'navigate',
@@ -104,19 +104,19 @@ def checkOnion(onion, cookies=''):
     check_ip = requests.get(ipcheck_url).text.replace('\n','')
     if check_ip != pure_ip:
         try:
-            #response = urlopen(onion).getcode()
-            if cookies != '':
-                req = requests.get(onion, cookies=jar, headers=headers)
-            else:
-                req = requests.get(onion, headers=headers)
-            response = req.status_code
+            response = urlopen(onion).getcode()
+            #if cookies != '':
+                #req = requests.get(onion, cookies=jar, headers=headers)
+            #else:
+                #req = requests.get(onion, headers=headers)
+            #response = req.status_code
         except Exception as e:
             response = e
 
         if response == 200:
             try:
-                #soup = BeautifulSoup(urlopen(onion), 'lxml')
-                soup = BeautifulSoup(req.text, 'lxml')
+                soup = BeautifulSoup(urlopen(onion), 'lxml')
+                #soup = BeautifulSoup(req.text, 'lxml')
                 response2 = soup.title.string
             except:
                 response2 = 'UNAVAILABLE'
