@@ -89,6 +89,7 @@ def checkOnion(onion):
         #jar.set(key, value)
     headers = {
         'Cookie': 'coob=5085; random=1064; PHPSESSID=jfsjfh84bl1b6nas7bcrpqmqku',
+        'Host': 'xxxxxxxxxs6qbnahsbvxbghsnqh4rj6whbyblqtnmetf7vell2fmxmad.onion',
         'User-Agent':'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0'
     }
     check_ip = requests.get(ipcheck_url).text.replace('\n','')
