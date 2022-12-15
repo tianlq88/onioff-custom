@@ -82,11 +82,11 @@ def checkOnion(onion):
     global gathered, response, outFile
 
     ipcheck_url = 'https://api.ipify.org'
-    cookies = 'PHPSESSID=t4qiruli672oel0a1j7mnr34bh; path=/; HttpOnly'
-    jar = requests.cookies.RequestsCookieJar()
-    for cookie in cookies.split(';'):
-        key,value = cookie.split('=', 1)
-        jar.set(key, value)
+    #cookies = 'PHPSESSID=t4qiruli672oel0a1j7mnr34bh; path=/; HttpOnly'
+    #jar = requests.cookies.RequestsCookieJar()
+    #for cookie in cookies.split(';'):
+        #key,value = cookie.split('=', 1)
+        #jar.set(key, value)
     headers = {
         'Cookie': 'coob=5085; random=1064; PHPSESSID=jfsjfh84bl1b6nas7bcrpqmqku',
         'User-Agent':'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0'
@@ -96,7 +96,7 @@ def checkOnion(onion):
         try:
             #response = urlopen(onion).getcode()
             
-            req = requests.get(onion, cookies=jar, headers=headers)
+            req = requests.get(onion, headers=headers)
             response = req.status_code
         except Exception as e:
             response = e
