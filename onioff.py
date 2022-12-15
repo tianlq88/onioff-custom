@@ -94,6 +94,12 @@ def checkOnion(onion):
         'Connection': 'keep-alive',
         'Cookie': 'coob=5085; random=1064; PHPSESSID=hjdoncgkug5untjb8fd76ribvs',
         'Host': 'xxxxxxxxxs6qbnahsbvxbghsnqh4rj6whbyblqtnmetf7vell2fmxmad.onion',
+        'Pragma': 'no-cache',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'none',
+        'Sec-Fetch-User': '?1',
+        'Upgrade-Insecure-Requests': '1',
         'User-Agent':'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0'
     }
     check_ip = requests.get(ipcheck_url).text.replace('\n','')
