@@ -91,6 +91,7 @@ def checkOnion(onion):
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
         'Accept-Encoding': 'gzip,deflate',
         'Accept-Language': 'en-US,en;q=0.5',
+        'Connection': 'keep-alive',
         'Cookie': 'coob=5085; random=1064; PHPSESSID=hjdoncgkug5untjb8fd76ribvs',
         'Host': 'xxxxxxxxxs6qbnahsbvxbghsnqh4rj6whbyblqtnmetf7vell2fmxmad.onion',
         'User-Agent':'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0'
