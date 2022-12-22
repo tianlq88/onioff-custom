@@ -116,10 +116,9 @@ def checkOnion(onion):
 
         if response.status == 200:
             try:
-                print(response.read().decode('utf8'))
-                soup = BeautifulSoup(response.read().decode('utf8'), 'lxml')
-                response2 = soup.title.string
-                print(response2)
+                #soup = BeautifulSoup(response.read().decode('utf8'), 'lxml')
+                #response2 = soup.title.string
+                response2 = 'Hello'
             except:
                 response2 = 'UNAVAILABLE'
 
