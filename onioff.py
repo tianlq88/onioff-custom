@@ -119,11 +119,11 @@ def checkOnion(onion):
                 #soup = BeautifulSoup(response.read().decode('utf8'), 'lxml')
                 #response2 = soup.title.string
                 while chunk := response.read(200):
-                    response2 += repr(chunk)
+                    print(repr(chunk))
             except:
                 response2 = 'UNAVAILABLE'
 
-            show = ("[O] {} ({}ACTIVE{}) ==> '{}'").format(onion, GREEN, END, response2)
+            show = ("[O] {} ({}ACTIVE{}) ==> '{}'").format(onion, GREEN, END, 'response2')
             gathered[onion] = 'ACTIVE', response2
         elif response.status == 302:
             nowPrint("--------302 Moved Temporarily", True)
