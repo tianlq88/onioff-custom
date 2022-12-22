@@ -109,9 +109,9 @@ def checkOnion(onion):
     if check_ip != pure_ip:
         try:
             #response = urlopen(onion).getcode()
-            print(000000)
             response = opener.open(onion)
-            print(response)
+            for x in response:
+                print('***'+x)
             cookie.save(ignore_discard=True, ignore_expires=True)
         except Exception as e:
             response = e
