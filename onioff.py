@@ -118,7 +118,8 @@ def checkOnion(onion):
             try:
                 #soup = BeautifulSoup(response.read().decode('utf8'), 'lxml')
                 #response2 = soup.title.string
-                response2 = response.read().decode('utf8')
+                while chunk := response.read(200):
+                    response2 += repr(chunk)
             except:
                 response2 = 'UNAVAILABLE'
 
