@@ -83,22 +83,20 @@ def checkOnion(onion):
 
     ipcheck_url = 'https://api.ipify.org'
     
-    # headers = {
-    #     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-    #     'Accept-Encoding': 'gzip,deflate',
-    #     'Accept-Language': 'en-US,en;q=0.5',
-    #     'Connection': 'keep-alive',
-    #     'Host': '666666666tjjjeweu5iikuj7hkpke5phvdylcless7g4dn6vma2xxcad.onion',
-    #     'Pragma': 'no-cache',
-    #     'Sec-Fetch-Dest': 'document',
-    #     'Sec-Fetch-Mode': 'navigate',
-    #     'Sec-Fetch-Site': 'none',
-    #     'Sec-Fetch-User': '?1',
-    #     'Upgrade-Insecure-Requests': '1',
-    #     'User-Agent':'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0'
-    # }
-    headers = [('User-Agent','Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0'),
-               ('Host','666666666tjjjeweu5iikuj7hkpke5phvdylcless7g4dn6vma2xxcad.onion')]
+    headers = [
+         ('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'),
+         ('Accept-Encoding', 'gzip,deflate'),
+         ('Accept-Language', 'en-US,en;q=0.5'),
+         ('Connection', 'keep-alive'),
+         ('Host', '666666666tjjjeweu5iikuj7hkpke5phvdylcless7g4dn6vma2xxcad.onion'),
+         ('Pragma', 'no-cache'),
+         ('Sec-Fetch-Dest', 'document'),
+         ('Sec-Fetch-Mode', 'navigate'),
+         ('Sec-Fetch-Site', 'none'),
+         ('Sec-Fetch-User', '?1'),
+         ('Upgrade-Insecure-Requests', '1'),
+         ('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0')
+    ]
     filename = 'cookies.txt'
     cookie = http.cookiejar.LWPCookieJar(filename)
     handler = HTTPCookieProcessor(cookie)
@@ -111,6 +109,7 @@ def checkOnion(onion):
     if check_ip != pure_ip:
         try:
             #response = urlopen(onion).getcode()
+            print(000000)
             response = opener.open(onion)
             print(response)
             cookie.save(ignore_discard=True, ignore_expires=True)
