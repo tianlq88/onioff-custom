@@ -120,9 +120,9 @@ def checkOnion(onion):
                 response2 = 'response2'
                 html = response.read().decode('utf8')
                 print(html)
-            except:
-                response2 = 'UNAVAILABLE'
-
+            except Exception as e:
+                #response2 = 'UNAVAILABLE'
+                response2 = e
             show = ("[O] {} ({}ACTIVE{}) ==> '{}'").format(onion, GREEN, END, response2)
             gathered[onion] = 'ACTIVE', response2
         elif response.status == 302:
