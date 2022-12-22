@@ -7,8 +7,8 @@ Copyright (C) 2016-2018 Nikolaos Kamarinakis (nikolaskam@gmail.com)
 See License at nikolaskama.me (https://nikolaskama.me/onioffproject)
 """
 
-import socket, socks, requests, sys, os, optparse, datetime, re
-from urllib.request import Request, urlopen
+import socket, socks, requests, sys, os, optparse, datetime, re, http.cookiejar
+from urllib.request import HTTPCookieProcessor, build_opener, urlopen
 from termcolor import colored
 from bs4 import BeautifulSoup
 from time import process_time, sleep
@@ -78,50 +78,46 @@ def connectTor():
 
 
 # Perform onion status & title inspection
-def checkOnion(onion, cookies=''):
+def checkOnion(onion):
     global gathered, response, outFile
 
     ipcheck_url = 'https://api.ipify.org'
-    if cookies != '':
-        jar = requests.cookies.RequestsCookieJar()
-        for cookie in cookies.split(';'):
-            key,value = cookie.split('=', 1)
-            jar.set(key, value)
-    headers = {
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Accept-Encoding': 'gzip,deflate',
-        'Accept-Language': 'en-US,en;q=0.5',
-        'Connection': 'keep-alive',
-        'Host': '666666666tjjjeweu5iikuj7hkpke5phvdylcless7g4dn6vma2xxcad.onion',
-        'Pragma': 'no-cache',
-        'Sec-Fetch-Dest': 'document',
-        'Sec-Fetch-Mode': 'navigate',
-        'Sec-Fetch-Site': 'none',
-        'Sec-Fetch-User': '?1',
-        'Upgrade-Insecure-Requests': '1',
-        'User-Agent':'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0'
-    }
-    req = Request(onion)
-    req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0')
-    req.add_header('Host', '666666666tjjjeweu5iikuj7hkpke5phvdylcless7g4dn6vma2xxcad.onion')
-    req.add_header('Cookie', 'lang=cn; stamp=49d834a054fd595d4cd728046406ff39; token=36e73c409b7dd21cc6b9c14d19311afc')
+    
+    # headers = {
+    #     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+    #     'Accept-Encoding': 'gzip,deflate',
+    #     'Accept-Language': 'en-US,en;q=0.5',
+    #     'Connection': 'keep-alive',
+    #     'Host': '666666666tjjjeweu5iikuj7hkpke5phvdylcless7g4dn6vma2xxcad.onion',
+    #     'Pragma': 'no-cache',
+    #     'Sec-Fetch-Dest': 'document',
+    #     'Sec-Fetch-Mode': 'navigate',
+    #     'Sec-Fetch-Site': 'none',
+    #     'Sec-Fetch-User': '?1',
+    #     'Upgrade-Insecure-Requests': '1',
+    #     'User-Agent':'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0'
+    # }
+    headers = ('User-Agent','Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0')
+    filename = 'cookies.txt'
+    cookie = http.cookiejar.LWPCookieJar(filename)
+    handler = HTTPCookieProcessor(cookie)
+    opener = build_opener(handler)
+    opener.addheaders = [headers]
+    #req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0')
+    #req.add_header('Host', '666666666tjjjeweu5iikuj7hkpke5phvdylcless7g4dn6vma2xxcad.onion')
+    #req.add_header('Cookie', 'lang=cn; stamp=49d834a054fd595d4cd728046406ff39; token=36e73c409b7dd21cc6b9c14d19311afc')
     check_ip = requests.get(ipcheck_url).text.replace('\n','')
     if check_ip != pure_ip:
         try:
-            print(req.headers)
-            response = urlopen(req).getcode()
-            #if cookies != '':
-                #req = requests.get(onion, cookies=jar, headers=headers)
-            #else:
-                #req = requests.get(onion, headers=headers)
-            #response = req.status_code
+            #response = urlopen(onion).getcode()
+            response = opener.open(onion).getcode()
+            cookie.save(ignore_discard=True, ignore_expires=True)
         except Exception as e:
             response = e
 
         if response == 200:
             try:
                 soup = BeautifulSoup(urlopen(onion), 'lxml')
-                #soup = BeautifulSoup(req.text, 'lxml')
                 response2 = soup.title.string
             except:
                 response2 = 'UNAVAILABLE'
