@@ -88,7 +88,7 @@ def checkOnion(onion):
          ('Accept-Encoding', 'gzip,deflate'),
          ('Accept-Language', 'en-US,en;q=0.5'),
          ('Connection', 'keep-alive'),
-         ('Host', '666666666tjjjeweu5iikuj7hkpke5phvdylcless7g4dn6vma2xxcad.onion'),
+         #('Host', '666666666tjjjeweu5iikuj7hkpke5phvdylcless7g4dn6vma2xxcad.onion'),
          ('Pragma', 'no-cache'),
          ('Sec-Fetch-Dest', 'document'),
          ('Sec-Fetch-Mode', 'navigate'),
@@ -117,17 +117,19 @@ def checkOnion(onion):
         if response.status == 200:
             try:
                 #soup = BeautifulSoup(response.read().decode('utf8'), 'lxml')
-                #response2 = soup.title.string
-                print(response.getheader('content-type'))
+                response2 = 'response2'
+                html = response.content
+                print(html)
             except:
                 response2 = 'UNAVAILABLE'
 
-            show = ("[O] {} ({}ACTIVE{}) ==> '{}'").format(onion, GREEN, END, 'response2')
+            show = ("[O] {} ({}ACTIVE{}) ==> '{}'").format(onion, GREEN, END, response2)
             gathered[onion] = 'ACTIVE', response2
         elif response.status == 302:
             nowPrint("--------302 Moved Temporarily", True)
             try:
                 location = response.geturl()
+                print(location)
                 checkOnion(location)
             except:
                 response2 = 'UNAVAILABLE' 
