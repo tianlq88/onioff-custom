@@ -118,16 +118,16 @@ def checkOnion(onion):
 
         if response.status == 200:
             try:
-                #soup = BeautifulSoup(response.read().decode('utf8'), 'lxml')
-                response2 = 'response2'
                 html = response.read()
                 buff = BytesIO(html)
                 f = gzip.GzipFile(fileobj=buff)
                 html = f.read().decode('utf8')
+                soup = BeautifulSoup(html, 'lxml')
+                response2 = soup.title.string
                 print(html)
-            except Exception as e:
-                #response2 = 'UNAVAILABLE'
-                response2 = e
+            except:
+                response2 = 'UNAVAILABLE'
+
             show = ("[O] {} ({}ACTIVE{}) ==> '{}'").format(onion, GREEN, END, response2)
             gathered[onion] = 'ACTIVE', response2
         elif response.status == 302:
