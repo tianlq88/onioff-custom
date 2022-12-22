@@ -97,12 +97,13 @@ def checkOnion(onion):
     #     'Upgrade-Insecure-Requests': '1',
     #     'User-Agent':'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0'
     # }
-    headers = ('User-Agent','Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0','Host', '666666666tjjjeweu5iikuj7hkpke5phvdylcless7g4dn6vma2xxcad.onion')
+    headers = [('User-Agent','Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0'),
+               ('Host','666666666tjjjeweu5iikuj7hkpke5phvdylcless7g4dn6vma2xxcad.onion')]
     filename = 'cookies.txt'
     cookie = http.cookiejar.LWPCookieJar(filename)
     handler = HTTPCookieProcessor(cookie)
     opener = build_opener(handler)
-    opener.addheaders = [headers]
+    opener.addheaders = headers
     #req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0')
     #req.add_header('Host', '666666666tjjjeweu5iikuj7hkpke5phvdylcless7g4dn6vma2xxcad.onion')
     #req.add_header('Cookie', 'lang=cn; stamp=49d834a054fd595d4cd728046406ff39; token=36e73c409b7dd21cc6b9c14d19311afc')
