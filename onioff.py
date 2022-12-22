@@ -111,7 +111,7 @@ def checkOnion(onion):
             #response = urlopen(onion).getcode()
             response = opener.open(onion)
             for x in response:
-                print('***'+x)
+                print(x)
             cookie.save(ignore_discard=True, ignore_expires=True)
         except Exception as e:
             response = e
