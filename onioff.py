@@ -110,13 +110,13 @@ def checkOnion(onion):
         try:
             #response = urlopen(onion).getcode()
             response = opener.open(onion)
-            for x in response:
-                print(x)
+            #for x in response:
+            #    print(x)
             cookie.save(ignore_discard=True, ignore_expires=True)
         except Exception as e:
             response = e
 
-        if response == 200:
+        if response.status == 200:
             try:
                 soup = BeautifulSoup(response.read(), 'lxml')
                 response2 = soup.title.string
@@ -125,7 +125,7 @@ def checkOnion(onion):
 
             show = ("[O] {} ({}ACTIVE{}) ==> '{}'").format(onion, GREEN, END, response2)
             gathered[onion] = 'ACTIVE', response2
-        elif response == 302:
+        elif response.status == 302:
             nowPrint("--------302 Moved Temporarily", True)
             try:
                 location = req.url
