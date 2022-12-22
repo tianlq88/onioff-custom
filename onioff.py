@@ -118,7 +118,7 @@ def checkOnion(onion):
             try:
                 #soup = BeautifulSoup(response.read().decode('utf8'), 'lxml')
                 #response2 = soup.title.string
-                print(response.content)
+                print(response.getheader('content-type'))
             except:
                 response2 = 'UNAVAILABLE'
 
