@@ -7,6 +7,8 @@ Copyright (C) 2016-2018 Nikolaos Kamarinakis (nikolaskam@gmail.com)
 See License at nikolaskama.me (https://nikolaskama.me/onioffproject)
 """
 
+import gzip
+from io import BytesIO
 import socket, socks, requests, sys, os, optparse, datetime, re, http.cookiejar
 from urllib.request import HTTPCookieProcessor, build_opener, urlopen
 from termcolor import colored
@@ -118,7 +120,10 @@ def checkOnion(onion):
             try:
                 #soup = BeautifulSoup(response.read().decode('utf8'), 'lxml')
                 response2 = 'response2'
-                html = response.read().decode('utf8')
+                html = response.read()
+                buff = BytesIO(html)
+                f = gzip.GzipFile(fileobj=buff)
+                html = f.read().decode('utf8')
                 print(html)
             except Exception as e:
                 #response2 = 'UNAVAILABLE'
