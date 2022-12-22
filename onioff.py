@@ -110,14 +110,15 @@ def checkOnion(onion):
     if check_ip != pure_ip:
         try:
             #response = urlopen(onion).getcode()
-            response = opener.open(onion).getcode()
+            response = opener.open(onion)
+            print(response)
             cookie.save(ignore_discard=True, ignore_expires=True)
         except Exception as e:
             response = e
 
         if response == 200:
             try:
-                soup = BeautifulSoup(urlopen(onion), 'lxml')
+                soup = BeautifulSoup(response.read(), 'lxml')
                 response2 = soup.title.string
             except:
                 response2 = 'UNAVAILABLE'
