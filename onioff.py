@@ -110,16 +110,15 @@ def checkOnion(onion):
         try:
             #response = urlopen(onion).getcode()
             response = opener.open(onion)
-            #for x in response:
-            #    print(x)
             cookie.save(ignore_discard=True, ignore_expires=True)
         except Exception as e:
             response = e
 
         if response.status == 200:
             try:
-                soup = BeautifulSoup(response.read(), 'lxml')
+                soup = BeautifulSoup(response.read().decode('utf8'), 'lxml')
                 response2 = soup.title.string
+                print(response2)
             except:
                 response2 = 'UNAVAILABLE'
 
@@ -128,8 +127,8 @@ def checkOnion(onion):
         elif response.status == 302:
             nowPrint("--------302 Moved Temporarily", True)
             try:
-                location = req.url
-                checkOnion(location, req.cookies)
+                location = response.geturl()
+                checkOnion(location)
             except:
                 response2 = 'UNAVAILABLE' 
         else:
