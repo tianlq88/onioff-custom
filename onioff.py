@@ -16,6 +16,7 @@ from bs4 import BeautifulSoup
 from time import process_time, sleep
 from threading import Thread
 import queue as queue
+from http.server import HTTPServer, BaseHTTPRequestHandler
 
 
 BLUE, RED, WHITE, YELLOW, GREEN, END = '\33[94m', '\033[91m', '\33[97m', '\33[93m', '\033[32m', '\033[0m'
@@ -211,121 +212,131 @@ def uniqueOutFile(checkFile):
 
     return outFile
 
+class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
+
+    def do_GET(self):
+        print(self.path)
+        #checkOnion()
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b'Hello, world!')
 
 
-def main():
+# def main():
 
-    if len(sys.argv[1:]) > 0:
+#     if len(sys.argv[1:]) > 0:
 
-        if (len(sys.argv[1:]) == 2 and sys.argv[1] == '--output') or (len(sys.argv[1:]) == 1 and sys.argv[1] == '--active') or \
-            (len(sys.argv[1:]) == 2 and sys.argv[1] == '--output'):
-            nowPrint("\n[!] Invalid Options --> Use '-h' or '--help' for usage options\n", False, False, True)
-            os._exit(1)
+#         if (len(sys.argv[1:]) == 2 and sys.argv[1] == '--output') or (len(sys.argv[1:]) == 1 and sys.argv[1] == '--active') or \
+#             (len(sys.argv[1:]) == 2 and sys.argv[1] == '--output'):
+#             nowPrint("\n[!] Invalid Options --> Use '-h' or '--help' for usage options\n", False, False, True)
+#             os._exit(1)
 
-        nowPrint("\n[+] Commencing onion inspection")
-        try:
-            connectTor()
-        except KeyboardInterrupt:
-            print('\nHave a great day! :)')
-            os._exit(1)
-        except:
-            nowPrint("\n[-] Tor offline --> Please make sure Tor is running", True)
-            nowPrint("\n[-] Exiting...\n", True)
-            os._exit(1)
-
-
-        def inspect():
-            while True:
-                onion = q.get()
-                response = checkOnion(onion)
-                sys.stdout.write(response+'\n')
-                sleep(0.1)
-                q.task_done()
-
-        for i in range(concurrent):
-            t = Thread(target=inspect)
-            t.daemon = True
-            t.start()
-
-        try:
-            for onion in argv:
-                if not onion.startswith('http') and not onion.startswith('https'):
-                    nowPrint("[-] No onion URL found --> Please enter a valid URL", True)
-                    nowPrint("\n[-] Exiting...\n", True)
-                    os._exit(1)
-                else:
-                    q.put(onion)
-                    q.join()
-        except KeyboardInterrupt:
-            print('\nHave a great day! :)')
-            os._exit(1)
+#         nowPrint("\n[+] Commencing onion inspection")
+#         try:
+#             connectTor()
+#         except KeyboardInterrupt:
+#             print('\nHave a great day! :)')
+#             os._exit(1)
+#         except:
+#             nowPrint("\n[-] Tor offline --> Please make sure Tor is running", True)
+#             nowPrint("\n[-] Exiting...\n", True)
+#             os._exit(1)
 
 
-        if options.file != None:
-            file = options.file
-            readFile(file)
+#         def inspect():
+#             while True:
+#                 onion = q.get()
+#                 response = checkOnion(onion)
+#                 sys.stdout.write(response+'\n')
+#                 sleep(0.1)
+#                 q.task_done()
+
+#         for i in range(concurrent):
+#             t = Thread(target=inspect)
+#             t.daemon = True
+#             t.start()
+
+#         try:
+#             for onion in argv:
+#                 if not onion.startswith('http') and not onion.startswith('https'):
+#                     nowPrint("[-] No onion URL found --> Please enter a valid URL", True)
+#                     nowPrint("\n[-] Exiting...\n", True)
+#                     os._exit(1)
+#                 else:
+#                     q.put(onion)
+#                     q.join()
+#         except KeyboardInterrupt:
+#             print('\nHave a great day! :)')
+#             os._exit(1)
 
 
-        try:
-            outFile = uniqueOutFile(options.output_file)
-            with open(outFile, 'a') as OutFile:
-                for k, v in gathered.items():
-                    # output format: {some_link.onion} - {page_title}
-                    if 'ACTIVE' in v[0]:
-                        OutFile.write('{} - {}'.format(k, v[1]) + '\n')
-                    else:
-                        OutFile.write('{} - {}'.format(k, v[0]) + '\n')
-        except IOError:
-            nowPrint("[-] Invalid path to out file given --> Please enter a valid path", True)
-            nowPrint("\n[-] Exiting...\n", True)
-            os._exit(1)
-        except KeyboardInterrupt:
-            print('\nHave a great day! :)')
-            os._exit(1)
+#         if options.file != None:
+#             file = options.file
+#             readFile(file)
 
 
-        nowPrint("[!] Onion inspection successfully complete", False, False, True)
-        saved_msg = "\n[!] Inspection report saved as --> " + str(outFile)
-        nowPrint(saved_msg, False, True, True)
-        print("\nComp/tional time elapsed:", (process_time() - start))
+#         try:
+#             outFile = uniqueOutFile(options.output_file)
+#             with open(outFile, 'a') as OutFile:
+#                 for k, v in gathered.items():
+#                     # output format: {some_link.onion} - {page_title}
+#                     if 'ACTIVE' in v[0]:
+#                         OutFile.write('{} - {}'.format(k, v[1]) + '\n')
+#                     else:
+#                         OutFile.write('{} - {}'.format(k, v[0]) + '\n')
+#         except IOError:
+#             nowPrint("[-] Invalid path to out file given --> Please enter a valid path", True)
+#             nowPrint("\n[-] Exiting...\n", True)
+#             os._exit(1)
+#         except KeyboardInterrupt:
+#             print('\nHave a great day! :)')
+#             os._exit(1)
 
-    else:
-        nowPrint("\n[!] Use '-h' or '--help' for usage options\n", False, False, True)
+
+#         nowPrint("[!] Onion inspection successfully complete", False, False, True)
+#         saved_msg = "\n[!] Inspection report saved as --> " + str(outFile)
+#         nowPrint(saved_msg, False, True, True)
+#         print("\nComp/tional time elapsed:", (process_time() - start))
+
+#     else:
+#         nowPrint("\n[!] Use '-h' or '--help' for usage options\n", False, False, True)
 
 
 
 if __name__ == '__main__':
+    httpd = HTTPServer(('localhost', 80), SimpleHTTPRequestHandler)
+    print("Server is running ...")
+    httpd.serve_forever()
+    # start = process_time()
 
-    start = process_time()
+    # optparse.OptionParser.format_epilog = lambda self, formatter: self.epilog
 
-    optparse.OptionParser.format_epilog = lambda self, formatter: self.epilog
+    # info = 'ONIOFF v3.0 Nikolaos Kamarinakis (nikolaskama.me)'
 
-    info = 'ONIOFF v3.0 Nikolaos Kamarinakis (nikolaskama.me)'
+    # examples = ('\nExamples:\n'+
+    #             '  python3 onioff.py http://xmh57jrzrnw6insl.onion/\n'+
+    #             '  python3 onioff.py -f ~/onions.txt -o ~/report.txt\n'+
+    #             '  python3 onioff.py https://facebookcorewwwi.onion/ -o ~/report.txt\n')
 
-    examples = ('\nExamples:\n'+
-                '  python3 onioff.py http://xmh57jrzrnw6insl.onion/\n'+
-                '  python3 onioff.py -f ~/onions.txt -o ~/report.txt\n'+
-                '  python3 onioff.py https://facebookcorewwwi.onion/ -o ~/report.txt\n')
+    # parser = optparse.OptionParser(epilog=examples,
+    #                                usage='python3 %prog {onion} [options]',
+    #                                prog='onioff.py', version=('ONIOFF v2.1'))
 
-    parser = optparse.OptionParser(epilog=examples,
-                                   usage='python3 %prog {onion} [options]',
-                                   prog='onioff.py', version=('ONIOFF v2.1'))
+    # parser.add_option('-f', '--file', action='store',
+    #                   dest='file', help='name of onion file')
 
-    parser.add_option('-f', '--file', action='store',
-                      dest='file', help='name of onion file')
+    # default = 'reports/onioff_{}'.format(str(datetime.datetime.now())[:-7].replace(' ', '_'))
+    # parser.add_option('-o', '--output', action='store', default=default,
+    #                   dest='output_file', help='output filename')
 
-    default = 'reports/onioff_{}'.format(str(datetime.datetime.now())[:-7].replace(' ', '_'))
-    parser.add_option('-o', '--output', action='store', default=default,
-                      dest='output_file', help='output filename')
+    # parser.add_option('-a', '--active', action='store_true', default=False,
+    #                   dest='active', help='log active onions only to output file')
 
-    parser.add_option('-a', '--active', action='store_true', default=False,
-                      dest='active', help='log active onions only to output file')
+    # (options, argv) = parser.parse_args()
 
-    (options, argv) = parser.parse_args()
+    # gathered = {}
 
-    gathered = {}
+    # concurrent = 200
+    # q = queue.Queue(concurrent * 2)
 
-    concurrent = 200
-    q = queue.Queue(concurrent * 2)
-
-    main()
+    #main()
