@@ -304,7 +304,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
-    httpd = HTTPServer(('localhost', 8081), SimpleHTTPRequestHandler)
+    httpd = HTTPServer(('0.0.0.0', 8081), SimpleHTTPRequestHandler)
     print("Server is running ...")
     httpd.serve_forever()
     # start = process_time()
