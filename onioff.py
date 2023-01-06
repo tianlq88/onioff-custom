@@ -17,7 +17,7 @@ from time import process_time, sleep
 from threading import Thread
 import queue as queue
 from http.server import HTTPServer, BaseHTTPRequestHandler
-
+from urllib.parse import urlparse
 
 BLUE, RED, WHITE, YELLOW, GREEN, END = '\33[94m', '\033[91m', '\33[97m', '\33[93m', '\033[32m', '\033[0m'
 sys.stdout.write(RED + """
@@ -120,12 +120,13 @@ def checkOnion(onion):
         if response.status == 200:
             try:
                 html = response.read()
-                buff = BytesIO(html)
-                f = gzip.GzipFile(fileobj=buff)
-                html = f.read().decode('utf8')
-                soup = BeautifulSoup(html, 'lxml')
-                response2 = soup.title.string
-                print(html)
+                #buff = BytesIO(html)
+                #f = gzip.GzipFile(fileobj=buff)
+                #html = f.read().decode('utf8')
+                #soup = BeautifulSoup(html, 'lxml')
+                #response2 = soup.title.string
+                #print(html)
+                return html
             except:
                 response2 = 'UNAVAILABLE'
 
@@ -215,11 +216,12 @@ def uniqueOutFile(checkFile):
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
-        print(self.path)
-        #checkOnion()
+        o = urlparse(self.path)
+        url = o.params[0:2]
+        html = checkOnion(url)
         self.send_response(200)
         self.end_headers()
-        self.wfile.write(b'Hello, world!')
+        self.wfile.write(html)
 
 
 # def main():
@@ -304,7 +306,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
-    httpd = HTTPServer(('0.0.0.0', 8081), SimpleHTTPRequestHandler)
+    httpd = HTTPServer(('localhost', 8081), SimpleHTTPRequestHandler)
     print("Server is running ...")
     httpd.serve_forever()
     # start = process_time()
