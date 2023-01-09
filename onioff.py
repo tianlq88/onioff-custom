@@ -116,7 +116,7 @@ def checkOnion(onion):
             cookie.save(ignore_discard=True, ignore_expires=True)
         except Exception as e:
             response = e
-
+        print(response)
         if response.getcode() == 200:
             try:
                 
