@@ -217,8 +217,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         o = urlparse(self.path)
-        print(o)
-        url = o.params[3:]
+        url = o.query[2:]
         print('url:'+url)
         try:
             resp = checkOnion(url)
