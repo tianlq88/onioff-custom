@@ -119,14 +119,14 @@ def checkOnion(onion):
 
         if response.status == 200:
             try:
-                html = response.read()
+                
                 #buff = BytesIO(html)
                 #f = gzip.GzipFile(fileobj=buff)
                 #html = f.read().decode('utf8')
                 #soup = BeautifulSoup(html, 'lxml')
                 #response2 = soup.title.string
                 #print(html)
-                return html
+                return response
             except:
                 response2 = 'UNAVAILABLE'
 
@@ -219,12 +219,19 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         o = urlparse(self.path)
         url = o.params[2:]
         print(url)
-        html = checkOnion(url)
-        self.send_response(200)
-        self.end_headers()
-        self.wfile.write(html)
-
-
+        try:
+            resp = checkOnion(url)
+            ct = resp.info().getheader('Content-Type')
+            body = resp.read()
+            self.send_response(200)
+            self.send_header('Content-Type',ct)
+            self.end_headers()
+            self.wfile.write(body)
+        except:
+            self.send_response(500)
+            self.send_header('Content-Type','text/html')
+            self.end_headers()
+            self.wfile.write('error')
 # def main():
 
 #     if len(sys.argv[1:]) > 0:
