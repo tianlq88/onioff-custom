@@ -220,6 +220,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         url = o.params[2:]
         print(url)
         try:
+            connectTor()
             resp = checkOnion(url)
             ct = resp.info().getheader('Content-Type')
             body = resp.read()
