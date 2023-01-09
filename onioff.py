@@ -220,7 +220,6 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         url = o.params[2:]
         print(url)
         try:
-            connectTor()
             resp = checkOnion(url)
             ct = resp.info().getheader('Content-Type')
             body = resp.read()
@@ -315,9 +314,19 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
-    httpd = HTTPServer(('0.0.0.0', 8081), SimpleHTTPRequestHandler)
-    print("Server is running ...")
-    httpd.serve_forever()
+    try:
+        connectTor()
+    except KeyboardInterrupt:
+        print('\nHave a great day! :)')
+        httpd = HTTPServer(('0.0.0.0', 8081), SimpleHTTPRequestHandler)
+        print("Server is running ...")
+        httpd.serve_forever()
+        os._exit(1)
+    except:
+        nowPrint("\n[-] Tor offline --> Please make sure Tor is running", True)
+        nowPrint("\n[-] Exiting...\n", True)
+        os._exit(1)
+    
     # start = process_time()
 
     # optparse.OptionParser.format_epilog = lambda self, formatter: self.epilog
