@@ -117,7 +117,7 @@ def checkOnion(onion):
         except Exception as e:
             response = e
 
-        if response.getcode() == 200:
+        if response.code == 200:
             try:
                 
                 #buff = BytesIO(html)
