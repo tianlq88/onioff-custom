@@ -217,6 +217,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         o = urlparse(self.path)
+        print(o)
         url = o.params[3:]
         print('url:'+url)
         try:
