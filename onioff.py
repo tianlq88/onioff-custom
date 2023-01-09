@@ -316,11 +316,12 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 if __name__ == '__main__':
     try:
         connectTor()
+        httpd = HTTPServer(('0.0.0.0', 8081), SimpleHTTPRequestHandler)
+        print("Server is running at port 8081...")
+        httpd.serve_forever()
     except KeyboardInterrupt:
         print('\nHave a great day! :)')
-        httpd = HTTPServer(('0.0.0.0', 8081), SimpleHTTPRequestHandler)
-        print("Server is running ...")
-        httpd.serve_forever()
+        os._exit(1)
     except:
         nowPrint("\n[-] Tor offline --> Please make sure Tor is running", True)
         nowPrint("\n[-] Exiting...\n", True)
