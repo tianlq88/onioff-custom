@@ -122,26 +122,14 @@ def checkOnion(onion):
                 #soup = BeautifulSoup(html, 'lxml')
                 #response2 = soup.title.string
                 #print(html)
-                show = ("[O] {} ({}ACTIVE{}) ==> '{}'").format(onion, GREEN, END, response2)
-                gathered[onion] = 'ACTIVE', response2
                 return response
             elif response.status == 302:
-                nowPrint("302 Moved Temporarily", True)
-                try:
-                    location = response.geturl()
-                    print(location)
-                    checkOnion(location)
-                except:
-                    response2 = 'UNAVAILABLE' 
+                location = response.geturl()
+                nowPrint("302 Moved Temporarily, Location: "+location, True)
+                checkOnion(location)
             else:
                 response = str(response).strip().replace(':','')
-                response2 = 'UNAVAILABLE (Onion Inactive)'
-                if len(response) > 2:
-                    show = ("[O] {} ({}INACTIVE{}) - {}").format(onion, RED, END, str(response).strip())
-                else:
-                    show = ("[O] {} ({}INACTIVE{})").format(onion, RED, END)
-                if not options.active:
-                    gathered[onion] = 'INACTIVE', response2
+                return response
         except Exception as e:
             response = e
             print(response)
