@@ -203,7 +203,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         try:
             resp = checkOnion(url)
             ct = resp.info().get('Content-Type')
-            body = resp.read().decode('utf-8')
+            body = resp.read().decode('utf-8','ignore')
             self.send_response(200)
             self.send_header('Content-Type',ct)
             self.end_headers()
