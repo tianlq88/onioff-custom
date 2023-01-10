@@ -117,12 +117,13 @@ def checkOnion(onion):
 
             if response.status == 200:
                 print('200')
-                #buff = BytesIO(html)
-                #f = gzip.GzipFile(fileobj=buff)
-                #html = f.read().decode('utf8')
+                html = response.read()
+                buff = BytesIO(html)
+                f = gzip.GzipFile(fileobj=buff)
+                html = f.read().decode('utf8')
                 #soup = BeautifulSoup(html, 'lxml')
                 #response2 = soup.title.string
-                #print(html)
+                print(html)
                 return response
             elif response.status == 302:
                 print('302')
