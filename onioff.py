@@ -116,6 +116,7 @@ def checkOnion(onion):
             cookie.save(ignore_discard=True, ignore_expires=True)
 
             if response.status == 200:
+                print('200')
                 #buff = BytesIO(html)
                 #f = gzip.GzipFile(fileobj=buff)
                 #html = f.read().decode('utf8')
@@ -124,10 +125,12 @@ def checkOnion(onion):
                 #print(html)
                 return response
             elif response.status == 302:
+                print('302')
                 location = response.geturl()
                 nowPrint("302 Moved Temporarily, Location: "+location, True)
                 checkOnion(location)
             else:
+                print('other code')
                 response = str(response).strip().replace(':','')
                 return response
         except Exception as e:
@@ -197,6 +200,7 @@ def uniqueOutFile(checkFile):
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
+        print('do_GET')
         o = urlparse(self.path)
         url = o.query[2:]
         print('url:'+url)
