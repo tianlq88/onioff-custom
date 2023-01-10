@@ -109,49 +109,42 @@ def checkOnion(onion):
     #req.add_header('Host', '666666666tjjjeweu5iikuj7hkpke5phvdylcless7g4dn6vma2xxcad.onion')
     #req.add_header('Cookie', 'lang=cn; stamp=49d834a054fd595d4cd728046406ff39; token=36e73c409b7dd21cc6b9c14d19311afc')
     check_ip = requests.get(ipcheck_url).text.replace('\n','')
-    if check_ip != pure_ip:
+    if check_ip != pure_ip:    
         try:
             #response = urlopen(onion).getcode()
             response = opener.open(onion)
             cookie.save(ignore_discard=True, ignore_expires=True)
-        except Exception as e:
-            response = e
-        print(response)
-        if response.getcode() == 200:
-            try:
-                
+
+            if response.status == 200:
                 #buff = BytesIO(html)
                 #f = gzip.GzipFile(fileobj=buff)
                 #html = f.read().decode('utf8')
                 #soup = BeautifulSoup(html, 'lxml')
                 #response2 = soup.title.string
                 #print(html)
+                show = ("[O] {} ({}ACTIVE{}) ==> '{}'").format(onion, GREEN, END, response2)
+                gathered[onion] = 'ACTIVE', response2
                 return response
-            except:
-                response2 = 'UNAVAILABLE'
-
-            show = ("[O] {} ({}ACTIVE{}) ==> '{}'").format(onion, GREEN, END, response2)
-            gathered[onion] = 'ACTIVE', response2
-        elif response.status == 302:
-            nowPrint("--------302 Moved Temporarily", True)
-            try:
-                location = response.geturl()
-                print(location)
-                checkOnion(location)
-            except:
-                response2 = 'UNAVAILABLE' 
-        else:
-            response = str(response).strip().replace(':','')
-            response2 = 'UNAVAILABLE (Onion Inactive)'
-            if len(response) > 2:
-                show = ("[O] {} ({}INACTIVE{}) - {}").format(onion, RED, END, str(response).strip())
+            elif response.status == 302:
+                nowPrint("302 Moved Temporarily", True)
+                try:
+                    location = response.geturl()
+                    print(location)
+                    checkOnion(location)
+                except:
+                    response2 = 'UNAVAILABLE' 
             else:
-                show = ("[O] {} ({}INACTIVE{})").format(onion, RED, END)
-            if not options.active:
-                gathered[onion] = 'INACTIVE', response2
-
-        return show
-
+                response = str(response).strip().replace(':','')
+                response2 = 'UNAVAILABLE (Onion Inactive)'
+                if len(response) > 2:
+                    show = ("[O] {} ({}INACTIVE{}) - {}").format(onion, RED, END, str(response).strip())
+                else:
+                    show = ("[O] {} ({}INACTIVE{})").format(onion, RED, END)
+                if not options.active:
+                    gathered[onion] = 'INACTIVE', response2
+        except Exception as e:
+            response = e
+            print(response)
     else:
         nowPrint("[-] Lost Tor connection", True)
         nowPrint("\n[-] Exiting...\n", True)
