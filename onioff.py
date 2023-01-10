@@ -203,17 +203,18 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         try:
             resp = checkOnion(url)
             ct = resp.info().get('Content-Type')
-            print(ct)
             body = resp.read()
             self.send_response(200)
             self.send_header('Content-Type',ct)
             self.end_headers()
-            self.wfile.write(body)
+            self.wfile.write(bytes(body,'utf-8'))
+            self.wfile.close()
         except:
             self.send_response(500)
             self.send_header('Content-Type','text/html')
             self.end_headers()
             self.wfile.write('error')
+            self.wfile.close()
 # def main():
 
 #     if len(sys.argv[1:]) > 0:
