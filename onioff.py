@@ -208,7 +208,6 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_header('Content-Type',ct)
             self.end_headers()
             self.wfile.write(bytes(body,'utf-8'))
-            self.wfile.close()
         except:
             self.send_response(500)
             self.send_header('Content-Type','text/html')
