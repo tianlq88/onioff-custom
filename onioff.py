@@ -202,7 +202,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         print('url:'+url)
         try:
             resp = checkOnion(url)
-            ct = resp.info().getheader('Content-Type')
+            ct = resp.info().get('Content-Type')
             body = resp.read()
             self.send_response(200)
             self.send_header('Content-Type',ct)
