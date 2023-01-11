@@ -122,11 +122,12 @@ def checkOnion(onion):
         try:
             #response = urlopen(onion).getcode()
             response = opener.open(onion)
-            cookie.save(ignore_discard=True, ignore_expires=True)
 
             if response.status == 200:
                 print('200')
-                print("Set-Cookie "+response.info().get("Set-Cookie"))
+                if response.info().get("Set-Cookie"):
+                    cookie.set_cookie(response.info().get("Set-Cookie"))
+                    cookie.save(ignore_discard=True, ignore_expires=True)
                 html = response.read()
                 if(response.info().get("Content-Encoding") == "gzip"):
                     buff = BytesIO(html)
