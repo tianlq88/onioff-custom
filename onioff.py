@@ -84,7 +84,7 @@ def meta_redirect(content):
     if result:
         wait,text = result["content"].split(";")
         if text.strip().lower().startswith("url="):
-            url = text.strip()[4:]
+            url = "xxxxxxxxxs6qbnahsbvxbghsnqh4rj6whbyblqtnmetf7vell2fmxmad.onion/"+text.strip()[4:]
             print("redirect to "+url)
             return url
     return None
