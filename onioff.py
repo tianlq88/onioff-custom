@@ -78,7 +78,15 @@ def connectTor():
     else:
         nowPrint("\n[+] Tor running normally\n")
 
-
+def meta_redirect(content):
+    soup = BeautifulSoup(content, 'lxml')
+    result = soup.find("meta",attrs={"http-equiv":"Refresh"})
+    if result:
+        wait,text = result["content"].split(";")
+        if text.strip().lower().startswith("url="):
+            url = text.strip()[4:]
+            return url
+    return None
 
 # Perform onion status & title inspection
 def checkOnion(onion):
@@ -118,12 +126,13 @@ def checkOnion(onion):
             if response.status == 200:
                 print('200')
                 html = response.read()
-                buff = BytesIO(html)
-                f = gzip.GzipFile(fileobj=buff)
-                html = f.read().decode('utf8')
-                #soup = BeautifulSoup(html, 'lxml')
-                #response2 = soup.title.string
-                print(html)
+                if(response.info().get("Content-Encoding") == "gzip"):
+                    buff = BytesIO(html)
+                    f = gzip.GzipFile(fileobj=buff)
+                    html = f.read().decode('utf8')
+                while meta_redirect(html):
+                    print("redirect to "+html)
+                    response = checkOnion(meta_redirect(html))
                 return response
             elif response.status == 302:
                 print('302')
