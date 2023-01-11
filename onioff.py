@@ -85,6 +85,7 @@ def meta_redirect(content):
         wait,text = result["content"].split(";")
         if text.strip().lower().startswith("url="):
             url = text.strip()[4:]
+            print("redirect to "+url)
             return url
     return None
 
@@ -130,9 +131,10 @@ def checkOnion(onion):
                     buff = BytesIO(html)
                     f = gzip.GzipFile(fileobj=buff)
                     html = f.read().decode('utf8')
+                print('redirect start')
                 while meta_redirect(html):
-                    print("redirect to "+html)
                     response = checkOnion(meta_redirect(html))
+                print('redirect end')
                 return response
             elif response.status == 302:
                 print('302')
