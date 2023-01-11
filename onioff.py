@@ -126,6 +126,7 @@ def checkOnion(onion):
 
             if response.status == 200:
                 print('200')
+                print("Set-Cookie "+response.info().get("Set-Cookie"))
                 html = response.read()
                 if(response.info().get("Content-Encoding") == "gzip"):
                     buff = BytesIO(html)
