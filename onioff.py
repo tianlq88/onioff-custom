@@ -111,10 +111,10 @@ def checkOnion(onion):
     ]
     filename = 'cookies.txt'
     cookie = http.cookiejar.LWPCookieJar(filename)
+    cookie.load(ignore_discard=True, ignore_expires=True)
     handler = HTTPCookieProcessor(cookie)
     opener = build_opener(handler)
     opener.addheaders = headers
-    
     check_ip = requests.get(ipcheck_url).text.replace('\n','')
     if check_ip != pure_ip:    
         try:
