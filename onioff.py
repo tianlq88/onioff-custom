@@ -114,20 +114,17 @@ def checkOnion(onion):
     handler = HTTPCookieProcessor(cookie)
     opener = build_opener(handler)
     opener.addheaders = headers
-    #req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0')
-    #req.add_header('Host', '666666666tjjjeweu5iikuj7hkpke5phvdylcless7g4dn6vma2xxcad.onion')
-    #req.add_header('Cookie', 'lang=cn; stamp=49d834a054fd595d4cd728046406ff39; token=36e73c409b7dd21cc6b9c14d19311afc')
+    
     check_ip = requests.get(ipcheck_url).text.replace('\n','')
     if check_ip != pure_ip:    
         try:
             #response = urlopen(onion).getcode()
             response = opener.open(onion)
-
+            cookie.save(ignore_discard=True, ignore_expires=True)
             if response.status == 200:
                 print('200')
-                if response.info().get("Set-Cookie"):
-                    cookie.set_cookie(response.info().get("Set-Cookie"))
-                    cookie.save(ignore_discard=True, ignore_expires=True)
+                print(response.info().get("Set-Cookie"))
+                    
                 html = response.read()
                 if(response.info().get("Content-Encoding") == "gzip"):
                     buff = BytesIO(html)
