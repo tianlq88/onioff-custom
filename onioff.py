@@ -126,11 +126,11 @@ def checkOnion(onion):
             cookie.save(ignore_discard=True, ignore_expires=True)
             if response.status == 200:
                 print('200')
-                if(response.info().get("Set-Cookie")):
+                if response.info().get("Set-Cookie"):
                     print("Set-Cookie:"+response.info().get("Set-Cookie"))
                     
                 html = response.read()
-                if(response.info().get("Content-Encoding") == "gzip"):
+                if response.info().get("Content-Encoding") == "gzip":
                     buff = BytesIO(html)
                     f = gzip.GzipFile(fileobj=buff)
                     html = f.read().decode('utf8')
@@ -150,7 +150,7 @@ def checkOnion(onion):
                 return response
         except Exception as e:
             response = e
-            print(response)
+            return response
     else:
         nowPrint("[-] Lost Tor connection", True)
         nowPrint("\n[-] Exiting...\n", True)
@@ -221,15 +221,22 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         print('url:'+url)
         try:
             resp = checkOnion(url)
-            ct = resp.info().get('Content-Type')
-            body = resp.read().decode('utf-8','ignore')
-            print('********')
-            print(body)
-            print('********')
-            self.send_response(200)
-            self.send_header('Content-Type',ct)
-            self.end_headers()
-            self.wfile.write(bytes(body,'utf-8'))
+            if resp:    
+                ct = resp.info().get('Content-Type')
+                body = resp.read().decode('utf-8','ignore')
+                print('********')
+                print(body)
+                print('********')
+                self.send_response(200)
+                self.send_header('Content-Type',ct)
+                self.end_headers()
+                self.wfile.write(bytes(body,'utf-8'))
+            else:
+                self.send_response(500)
+                self.send_header('Content-Type','text/html')
+                self.end_headers()
+                self.wfile.write('error')
+                self.wfile.close()
         except:
             self.send_response(500)
             self.send_header('Content-Type','text/html')
