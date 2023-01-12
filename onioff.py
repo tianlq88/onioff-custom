@@ -126,7 +126,8 @@ def checkOnion(onion):
             cookie.save(ignore_discard=True, ignore_expires=True)
             if response.status == 200:
                 print('200')
-                print("Set-Cookie:"+response.info().get("Set-Cookie"))
+                if(response.info().get("Set-Cookie")):
+                    print("Set-Cookie:"+response.info().get("Set-Cookie"))
                     
                 html = response.read()
                 if(response.info().get("Content-Encoding") == "gzip"):
