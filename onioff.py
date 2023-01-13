@@ -113,8 +113,8 @@ def checkOnion(onion):
          ('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0')
     ]
     filename = 'cookies.txt'
-    cookie = http.cookiejar.LWPCookieJar(filename)
-    cookie.load(ignore_discard=True, ignore_expires=True)
+    cookie = http.cookiejar.LWPCookieJar()
+    cookie.load(filename, ignore_discard=True, ignore_expires=True)
     handler = HTTPCookieProcessor(cookie)
     opener = build_opener(handler)
     opener.addheaders = headers
