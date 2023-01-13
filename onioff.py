@@ -128,16 +128,16 @@ def checkOnion(onion):
                 print('200')
                 if response.info().get("Set-Cookie"):
                     print("Set-Cookie:"+response.info().get("Set-Cookie"))
-                    
-                html = response.read()
-                if response.info().get("Content-Encoding") == "gzip":
-                    buff = BytesIO(html)
-                    f = gzip.GzipFile(fileobj=buff)
-                    html = f.read().decode('utf8')
-                print('redirect start')
-                while meta_redirect(html):
-                    response = checkOnion(meta_redirect(html))
-                print('redirect end')
+                if response.info().get('Content-Type') == 'text/html':
+                    html = response.read()
+                    if response.info().get("Content-Encoding") == "gzip":
+                        buff = BytesIO(html)
+                        f = gzip.GzipFile(fileobj=buff)
+                        html = f.read().decode('utf8')
+                    print('redirect start')
+                    while meta_redirect(html):
+                        response = checkOnion(meta_redirect(html))
+                    print('redirect end')
                 return response
             elif response.status == 302:
                 print('302')
@@ -221,7 +221,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         print('url:'+url)
         try:
             resp = checkOnion(url)
-            if resp:    
+            if resp is not None:    
                 ct = resp.info().get('Content-Type')
                 body = resp.read().decode('utf-8','ignore')
                 print('********')
